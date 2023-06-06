@@ -44,6 +44,8 @@ async def profile(ctx, member:discord.Member = None):
     embed = discord.Embed(title=f"{name}", colour=discord.Colour.random())
     embed.set_author(name="Profile")
     embed.set_thumbnail(url=f"{pfp}")
+    roles = f"{' '.join([role.mention for role in member.roles if role.name != '@everyone'])}"
+    embed.add_field(name="Roles:", value=f"{roles}", inline=False)
 
     await ctx.send(embed=embed)
 
