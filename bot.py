@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv('.env')
 token = os.getenv('TUTORIAL_BOT_TOKEN')
+channel_id = os.getenv('CHANNEL_ID')
 
 bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
 
@@ -38,7 +39,7 @@ async def ticket(ctx: commands.context, note, member:discord.Member = None):
     if member == None:  
         member = ctx.author
 
-    channel = bot.get_channel(1115704745882034286)
+    channel = bot.get_channel(channel_id)
 
     embed = discord.Embed(title="Ticket", colour=discord.Colour.random())
 
