@@ -35,16 +35,16 @@ React to this message with the corresponding emoji to get assigned the role!"""
 
 
 @bot.command()
-async def ticket(ctx: commands.context, note, member:discord.Member = None):
+async def ticket(ctx: commands.context, *note, member:discord.Member = None):
     if member == None:  
         member = ctx.author
 
-    channel = bot.get_channel(channel_id)
+    channel = bot.get_channel(int(channel_id))
 
     embed = discord.Embed(title="Ticket", colour=discord.Colour.random())
 
     embed.add_field(name="Discord Username", value=f"{member}", inline=False)
-    embed.add_field(name="Question", value=f"{note}", inline=False)
+    embed.add_field(name="Question", value=" ".join(note), inline=False)
 
     await channel.send(embed=embed)
     
