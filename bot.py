@@ -1,17 +1,47 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
+
 import os
 from dotenv import load_dotenv 
 
 load_dotenv('.env')
 token = os.getenv('TUTORIAL_BOT_TOKEN')
 channel_id = os.getenv('CHANNEL_ID')
+channel_id2 = os.getenv('CHANNEL_ID2')
 
 bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
 
 @bot.event
 async def on_ready():
     print("Bot is online")
+    channel = bot.get_channel(int(channel_id2))
+    text= "YOUR_MESSAGE_HERE"
+    emoji = await channel.send(text)
+    await emoji.add_reaction('🟦')
+    await emoji.add_reaction('🟥')
+    await emoji.add_reaction('🟨')
+
+@bot.event
+async def on_reaction_add(reaction, user):
+    
+    channel = bot.get_channel(int(channel_id2))
+    if reaction.message.channel.id != channel.id:
+        return
+    if reaction.emoji == "🟦":
+      Role = discord.utils.get(user.guild.roles, name="Python")
+      await user.add_roles(Role)
+    elif reaction.emoji == "🟥":
+      Role = discord.utils.get(user.guild.roles, name="Java")
+      await user.add_roles(Role)
+    elif reaction.emoji == "🟨":
+      Role = discord.utils.get(user.guild.roles, name="C")
+      await user.add_roles(Role)
+
+@bot.event
+async def on_reaction_remove(reaction, user):
+    print("TODO")
+    
 
 @bot.command()
 async def roles(ctx: commands.context, member:discord.Member = None):
@@ -22,9 +52,9 @@ async def roles(ctx: commands.context, member:discord.Member = None):
 
 Which of these languages do you use:
 
-* Python (🐍)
-* Java (🕸️)
-* C (🐉)
+* Python (🟦)
+* Java (🟥)
+* C (🟨)
 
 React to this message with the corresponding emoji to get assigned the role!"""
 
@@ -47,7 +77,7 @@ async def ticket(ctx: commands.context, *note, member:discord.Member = None):
     embed.add_field(name="Question", value=" ".join(note), inline=False)
 
     await channel.send(embed=embed)
-    
+
 
 @bot.command()
 async def profile(ctx, member:discord.Member = None):
