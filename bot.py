@@ -13,14 +13,8 @@ channel_id2 = os.getenv('CHANNEL_ID2')
 bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
 
 @bot.event
-async def on_ready():
+async def on_ready(self, guild):
     print("Bot is online")
-    channel = bot.get_channel(int(channel_id2))
-    text= "YOUR_MESSAGE_HERE"
-    emoji = await channel.send(text)
-    await emoji.add_reaction('🟦')
-    await emoji.add_reaction('🟥')
-    await emoji.add_reaction('🟨')
 
 @bot.event
 async def on_reaction_add(reaction, user):
@@ -42,13 +36,10 @@ async def on_reaction_add(reaction, user):
 async def on_reaction_remove(reaction, user):
     print("TODO")
     
-
 @bot.command()
 async def roles(ctx: commands.context, member:discord.Member = None):
-    if member == None:  
-        member = ctx.author
 
-    lineOne = f"""Hi {member.display_name}, welcome to the server!
+    lineOne =  """Welcome to the server!
 
 Which of these languages do you use:
 
@@ -61,8 +52,10 @@ React to this message with the corresponding emoji to get assigned the role!"""
     embed = discord.Embed(title="Roles", colour=discord.Colour.random())
     embed.add_field(name="", value=f"{lineOne}", inline=False)
 
-    await ctx.send(embed=embed)
-
+    emoji = await ctx.send(embed=embed)
+    await emoji.add_reaction('🟦')
+    await emoji.add_reaction('🟥')
+    await emoji.add_reaction('🟨')
 
 @bot.command()
 async def ticket(ctx: commands.context, *note, member:discord.Member = None):
