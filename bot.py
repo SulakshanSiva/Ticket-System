@@ -13,7 +13,7 @@ channel_id2 = os.getenv('CHANNEL_ID2')
 bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
 
 @bot.event
-async def on_ready(self, guild):
+async def on_ready():
     print("Bot is online")
 
 @bot.event
@@ -32,9 +32,6 @@ async def on_reaction_add(reaction, user):
       Role = discord.utils.get(user.guild.roles, name="C")
       await user.add_roles(Role)
 
-@bot.event
-async def on_reaction_remove(reaction, user):
-    print("TODO")
     
 @bot.command()
 async def roles(ctx: commands.context, member:discord.Member = None):
